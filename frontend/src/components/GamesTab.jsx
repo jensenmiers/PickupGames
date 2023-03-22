@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import GameCard from './GameCard'
+import CreateAGameForm from './CreateAGameForm'
 
-const GamesTab = () => {
+const GamesTab = ({gyms, user}) => {
 
   const [games, setGames] = useState([])
+
+  const addGame = (newGame) => {
+    setGames((prevGames) => [...prevGames, newGame])
+  }
 
   useEffect(() => {
     fetch('/api/games')
@@ -14,8 +19,9 @@ const GamesTab = () => {
   return (
     <div>
       <h2>Games</h2>
+      <CreateAGameForm addGame={addGame} gyms={gyms}/>
       {games.map((game) => {
-        return <GameCard key={game.id} game={game} />
+        return <GameCard key={game.id} game={game} user={user}/>
       })}
     </div>
   )

@@ -1,15 +1,8 @@
 import React, {useState, useEffect} from 'react'
 import GymCard from './GymCard'
 
-const GymsTab = () => {
+const GymsTab = ({gyms}) => {
 
-  const [gyms, setGyms] = useState([])
-
-  useEffect(() => {
-    fetch('api/gyms')
-      .then((response) => response.json())
-      .then((data) => setGyms(data))
-  }, [])
 
   return (
     <div>

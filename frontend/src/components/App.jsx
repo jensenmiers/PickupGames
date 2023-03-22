@@ -9,6 +9,7 @@ import LogIn from './LogIn'
 import '../App.css'
 
 function App() {
+
   const [user, setUser] = useState(null)
 
   useEffect(() => {
@@ -20,6 +21,15 @@ function App() {
     })
   }, [])
 
+  const [gyms, setGyms] = useState([]) // Gym names to access on all components
+  
+  useEffect(() => {
+    fetch('api/gyms')
+    .then((response) => response.json())
+    .then((data) => setGyms(data))
+  }, [])
+  
+
   if (!user) {
      return (
       <div>
@@ -29,13 +39,13 @@ function App() {
             <LogIn onLogin={setUser} />
           </Route>
           <Route exact path='/games'>
-            <GamesTab />
+            <GamesTab gyms={gyms}/>
           </Route>
           <Route exact path='/players'>
             <PlayersTab />
           </Route>
           <Route exact path = '/gyms'>
-            <GymsTab />
+            <GymsTab gyms={gyms}/>
         </Route>
         </Switch>
       </div>
@@ -47,13 +57,13 @@ function App() {
       <NavBar user={user} setUser={setUser} />
       <Switch >
         <Route exact path='/games'>
-          <GamesTab />
+          <GamesTab user={user} gyms={gyms}/>
         </Route>
         <Route exact path = '/players'>
           <PlayersTab />
         </Route>
         <Route exact path = '/gyms'>
-          <GymsTab />
+          <GymsTab gyms={gyms} />
         </Route>
         <Route exact path = '/profile' >
           <Profile />
