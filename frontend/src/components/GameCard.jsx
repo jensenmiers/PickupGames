@@ -1,94 +1,218 @@
 import React, {useState, useEffect } from 'react'
 
-const GameCard = ({game, user}) => {
+const GameCard = ({game, user, setGames, gyms}) => {
 
     const [isJoined, setIsJoined] = useState(false);
-    const [signedUpPlayersForGame, setSignedUpPlayersForGame] = useState([]);
-
+    const [RSVPs, setRSVPs] = useState([]);
+    const [formData, setFormData] = useState(game)
+    const [showForm, setShowForm] = useState(false);
 
     useEffect(() => {
         if (user) {
-          fetch('/api/signed_up_players')
+        fetch('/api/signed_up_players')
             .then((response) => response.json())
-            .then((allSignedUpPlayers) => {
-              const playersForGame = allSignedUpPlayers.filter((player) => player.game_id === game.id);
-              setSignedUpPlayersForGame(playersForGame)
-              const userSignedUp = playersForGame.some((player) => player.player_id === user.id);
-              setIsJoined(userSignedUp);
+            .then((allRSVPs) => {
+            const RSVPsForGame = allRSVPs.filter((player) => player.game_id === game.id);
+            setRSVPs(RSVPsForGame)
+            const userHasRSVPd = RSVPsForGame.some((player) => player.player_id === user.id);
+            setIsJoined(userHasRSVPd);
             })
             .catch((error) => {
-              console.error('There was a problem with the fetch operation:', error);
+            console.error('There was a problem with the fetch operation:', error);
             });
         }
-      }, [game, user]);
-
+    }, [game, user]);
 
     const handleJoinOrUnjoin = () => {
         if (isJoined) {
-            const signedUpPlayerId = signedUpPlayersForGame.find((player) => player.player_id === user.id).id;
-            fetch(`/api/signed_up_players/${signedUpPlayerId}`, {
-              method: 'DELETE',
-              headers: {
-                // Add your authentication headers if required.
-              },
+            const RSVP = RSVPs.find((player) => player.player_id === user.id);
+            fetch(`/api/signed_up_players/${RSVP.id}`, {
+            method: 'DELETE',
+            headers: {
+                // Add authentication headers if required?
+            },
             })
-              .then((response) => {
+            .then((response) => {
                 if (!response.ok) {
-                  throw new Error('Error unjoining the game');
+                throw new Error('Error unjoining the game');
                 }
                 setIsJoined(false);
-              })
-              .catch((error) => {
+                setRSVPs((prevRSVPs) => prevRSVPs.filter((player) => player.id !== RSVP.id));
+            })
+            .catch((error) => {
                 console.error('There was a problem with the fetch operation:', error);
-              });
-          } else {
+            });
+        } else {
             fetch('/api/signed_up_players', {
-              method: 'POST',
-              headers: {
+            method: 'POST',
+            headers: {
                 'Content-Type': 'application/json',
                 // Add your authentication headers if required.
-              },
-              body: JSON.stringify({
+            },
+            body: JSON.stringify({
                 user_id: user.id,
                 game_id: game.id,
-              }),
+            }),
             })
-              .then((response) => {
+            .then((response) => {
                 if (!response.ok) {
-                  throw new Error('Error joining the game');
+                throw new Error('Error joining the game');
                 }
                 return response.json();
-              })
-              .then((signedUpPlayer) => {
-                setIsJoined(true);
-              })
-              .catch((error) => {
+            })
+            .then((newRSVP) => {
+                setIsJoined(true)
+                setRSVPs((prevRSVPS) => [...prevRSVPS, newRSVP])
+            })
+            .catch((error) => {
                 console.error('There was a problem with the fetch operation:', error);
-              });
-          }
+            });
+        }
         };
 
-    const deleteGame = () => {}
+        const handleFormChange = (e) => {
+            const { name, value } = e.target;
+            setFormData((prevData) => ({
+            ...prevData,
+            [name]: value,
+            }));
+        };
 
-    const editGame = () => {}
+        const handleFormSubmit = (e) => {
+            e.preventDefault();
+            fetch(`/api/games/${game.id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                // Add authentication headers if required.
+            },
+            body: JSON.stringify(formData),
+            })
+            .then((response) => {
+                if (!response.ok) {
+                throw new Error('Error updating the game');
+                }
+                return response.json();
+            })
+            .then((updatedGame) => {
+                setGames((prevGames) =>
+                prevGames.map((g) => (g.id === updatedGame.id ? updatedGame : g))
+                );
+                setShowForm(false)
+            })
+            .catch((error) => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
+        };
+
+        const deleteGame = () => {
+        fetch(`/api/games/${game.id}`, {
+            method: 'DELETE'
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error('Error deleting the game')
+                }
+                setGames((currentGames) => currentGames.filter((g) => g.id !== game.id))
+            })
+            .catch((error) => {
+                console.error('There was a problem with the fetch operation:', error)
+            })
+    }
+
+        const editGame = () => {
+            showForm(true);
+        };
+
+        const formatDate = (dateString) => {
+            const date = new Date(dateString);
+            const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            const hours = date.getHours();
+            const meridiem = hours < 12 ? 'AM' : 'PM';
+        
+            return `${((hours + 11) % 12) + 1}${meridiem} - ${days[date.getDay()]} ${months[date.getMonth()]} ${date.getDate()} `;
+          };
+
+          const formatDateTitle = (dateString) => {
+            const date = new Date(dateString);
+            const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            const hours = date.getHours();
+            const meridiem = hours < 12 ? 'AM' : 'PM';
+          
+            return `${((hours + 11) % 12) + 1}${meridiem} ${days[date.getDay()]}`;
+          };
 
   return (
     <div className="game-card">
-        <h3>{game.gym.gym_name}</h3>
+        <h3>{formatDateTitle(game.game_start)} at {game.gym.gym_name}</h3>
         <p>Donation: ${game.donation}</p>
-        <p>Start: {game.game_start}</p>
-        <p>End: {game.game_end}</p>
-        <p>Capacity: {game.capacity} of {game.capacity}</p>
+        <p>Start: {formatDate(game.game_start)}</p>
+        <p>End: {formatDate(game.game_end)}</p>
+        <p>Total Capacity: {game.capacity} players</p>
         <p>Created by: {game.player.username}</p>
+            {showForm ? (
+                <form onSubmit={handleFormSubmit}>
+                <h3>Edit your Game</h3>
+                    <label htmlFor="game_start">Game Start:</label>
+                    <input
+                        type="datetime-local"
+                        name="game_start"
+                        value={formData.game_start}
+                        onChange={handleFormChange}
+                    />
+                    <br />
+                    <label htmlFor="game_end">Game End:</label>
+                    <input
+                        type="datetime-local"
+                        name="game_end"
+                        value={formData.game_end}
+                        onChange={handleFormChange}
+                    />
+                    <br />
+                    <label htmlFor="capacity">Capacity:</label>
+                    <input
+                        type="number"
+                        name="capacity"
+                        value={formData.capacity}
+                        onChange={handleFormChange}
+                    />
+                    <br />
+                    <label htmlFor="donation">Donation:</label>
+                    <input
+                        type="number"
+                        name="donation"
+                        value={formData.donation}
+                        onChange={handleFormChange}
+                    />
+                    <br />
+                    <label htmlFor="gym_id">Location:</label>
+                    <select
+                        name='gym_id'
+                        value={formData.gym_id}
+                        onChange={handleFormChange}
+                    >
+                        <option value=''>Select a gym</option>
+                        {gyms.map((gym) => {
+                            return <option key={gym.id} value={gym.id}>
+                                {gym.gym_name}
+                            </option>
+                        })}
+                    </select>
+                    <br />
+                    <button type="submit">Update</button>
+                </form>
+                ) : (
+                <>
+                    {user && game.player.id === user.id && (<button onClick={() => setShowForm(true)}>Edit</button>)}
+                </>
+                )}
         <button
-  onClick={handleJoinOrUnjoin}
-  style={{ backgroundColor: isJoined ? 'green' : 'blue' }}
->
-  {isJoined ? 'JOINED' : 'JOIN GAME'}
-</button>
-        {user && game.player.id === user.id && (
-        <button onClick={editGame}>EDIT GAME</button>
-        )}
+            onClick={handleJoinOrUnjoin}
+            style={{ backgroundColor: isJoined ? 'green' : 'blue' }}
+        >
+        {isJoined ? 'JOINED' : 'JOIN GAME'}
+        </button>
         {user && game.player.id === user.id && (
         <button onClick={deleteGame}>DELETE GAME</button>
         )}

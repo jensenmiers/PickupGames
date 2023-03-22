@@ -21,7 +21,7 @@ function NavBar ({user, setUser}) {
     
     if (!user) {
         return (
-         <nav>
+         <nav className="navbar">
              <NavLink to='/login'>
                Log in
              </NavLink>
@@ -38,7 +38,7 @@ function NavBar ({user, setUser}) {
         )}
     
     return (
-        <nav>
+        <nav className="navbar">
             <NavLink exact to='/games'>Games</NavLink>
             <NavLink exact to='/players'>Players</NavLink>
             <NavLink exact to='/gyms'>Gyms</NavLink>

@@ -46,7 +46,21 @@ const CreateAGameForm = ({addGame, gyms}) => {
 
     return (
         <form onSubmit={handleSubmit}>
-            <h3>Create a Game</h3>
+            <h3></h3>
+                <label htmlFor="gym_id">Location:</label>
+                    <select
+                        name='gym_id'
+                        value={formData.gym_id}
+                        onChange={handleChange}
+                    >
+                        <option value=''>Select a gym</option>
+                        {gyms.map((gym) => {
+                            return <option key={gym.id} value={gym.id}>
+                                {gym.gym_name}
+                            </option>
+                        })}
+                    </select>
+                    <br />
                 <label htmlFor="game_start">Game Start:</label>
                 <input
                     type="datetime-local"
@@ -74,21 +88,6 @@ const CreateAGameForm = ({addGame, gyms}) => {
                 />
                 <br />
 
-                <label htmlFor="gym_id">Location:</label>
-                <select 
-                    name='gym_id'
-                    value={formData.gym_id}
-                    onChange={handleChange}
-                >
-                    <option value=''>Select a gym</option>
-                    {gyms.map((gym) => {
-                        return <option key={gym.id} value={gym.id}>
-                            {gym.gym_name}
-                        </option>
-                    })}
-                </select>
-                <br />
-
                 <label htmlFor="donation">Donation:</label>
                 <input
                     type="number"
@@ -98,7 +97,7 @@ const CreateAGameForm = ({addGame, gyms}) => {
                 />
                 <br />
 
-            <button type='submit'>Create a Game</button>
+            <button type='submit'>ADD GAME</button>
         </form>
     )
 

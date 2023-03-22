@@ -5,6 +5,8 @@ import CreateAGameForm from './CreateAGameForm'
 const GamesTab = ({gyms, user}) => {
 
   const [games, setGames] = useState([])
+  const [showCreateForm, setShowCreateForm] = useState(false);
+
 
   const addGame = (newGame) => {
     setGames((prevGames) => [...prevGames, newGame])
@@ -19,9 +21,13 @@ const GamesTab = ({gyms, user}) => {
   return (
     <div>
       <h2>Games</h2>
-      <CreateAGameForm addGame={addGame} gyms={gyms}/>
+      <button onClick={() => setShowCreateForm(!showCreateForm)}>
+      {showCreateForm ? 'Dismiss' : 'Add a Game'}
+      </button>
+      {showCreateForm && <CreateAGameForm addGame={addGame} gyms={gyms} />}
+      {/* <CreateAGameForm addGame={addGame} gyms={gyms}/> */}
       {games.map((game) => {
-        return <GameCard key={game.id} game={game} user={user}/>
+        return <GameCard key={game.id} game={game} games={games} user={user} setGames={setGames} gyms={gyms}/>
       })}
     </div>
   )
