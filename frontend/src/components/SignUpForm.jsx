@@ -5,7 +5,7 @@ function SignUpForm({ onLogin }) {
   const [password, setPassword] = useState('');
   const [player_email, setPlayerEmail] = useState('');
   const [player_phone_number, setPlayerPhoneNumber] = useState('');
-  const [errors, setErrors] = useState([ ]);
+  const [errors, setErrors] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = (e) => {

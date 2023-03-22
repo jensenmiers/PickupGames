@@ -66,7 +66,7 @@ function App() {
           <GymsTab gyms={gyms} />
         </Route>
         <Route exact path = '/profile' >
-          <Profile />
+          <Profile user={user}/>
         </Route>
       </Switch>
 
