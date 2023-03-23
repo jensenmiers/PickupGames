@@ -60,7 +60,7 @@ function App() {
           <GamesTab user={user} gyms={gyms}/>
         </Route>
         <Route exact path = '/players'>
-          <PlayersTab />
+          <PlayersTab user={user} />
         </Route>
         <Route exact path = '/gyms'>
           <GymsTab gyms={gyms} />

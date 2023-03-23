@@ -42,7 +42,7 @@ function NavBar ({user, setUser}) {
             <NavLink exact to='/games'>Games</NavLink>
             <NavLink exact to='/players'>Players</NavLink>
             <NavLink exact to='/gyms'>Gyms</NavLink>
-            <NavLink exact to='/profile'>Profile</NavLink>
+            <NavLink exact to='/profile'>{user.username}</NavLink>
             <button  onClick={handleLogoutClick}>Log Out</button>
         </nav>
     )

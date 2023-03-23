@@ -1,13 +1,18 @@
 import React, { useState, useEffect } from 'react'
 
-const PlayersTab = () => {
+const PlayersTab = ({user}) => {
   const [RSVPs, setRSVPs] = useState([]);
+
 
   useEffect(() => {
     fetch('/api/signed_up_players')
       .then((response) => response.json())
-      .then((data) => setRSVPs(data));
-  }, []);
+      .then((allRSVPs) => {
+        setRSVPs(allRSVPs)
+      } )
+    }, [])
+    
+    console.log('allRSVPs: ', RSVPs);
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -16,7 +21,7 @@ const PlayersTab = () => {
     const hours = date.getHours();
     const meridiem = hours < 12 ? 'AM' : 'PM';
 
-    return `${((hours + 11) % 12) + 1}${meridiem} - ${days[date.getDay()]} ${months[date.getMonth()]} ${date.getDate()} `;
+  return `${((hours + 11) % 12) + 1}${meridiem} - ${days[date.getDay()]} ${months[date.getMonth()]} ${date.getDate()} `;
   };
 
   const formatRSVPtime = (dateString) => {
@@ -28,22 +33,62 @@ const PlayersTab = () => {
     const formattedHours = ((hours + 11) % 12) + 1;
     const formattedMinutes = minutes.toString().padStart(2, '0');
 
-    return `${formattedHours}:${formattedMinutes} ${meridiem}`;
+  return `${formattedHours}:${formattedMinutes} ${meridiem}`;
   }
 
-  return (
+  const userHasRSVPed = (gameId) => {
+    return RSVPs.some(
+      (rsvp) => rsvp.player_id === user.id && rsvp.game_id === gameId
+    );
+  };
+
+  const handleJoin = (game_id) => {
+    fetch('/api/signed_up_players', {
+      method: 'POST',
+      headers: {
+        'Content-Type' : 'application/json'
+      },
+      body: JSON.stringify({
+        user_id: user.id,
+        game_id: game_id
+      })
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Error joining the game')
+        }
+        return response.json()
+      })
+      .then((newRSVP) => {
+        setRSVPs((prevRSVPs) => [...prevRSVPs, newRSVP])
+      })
+      .catch((error) => {
+        console.error('There was a problem with the fetch operation', error)
+      })
+  }
+
+return (
     <div>
       <h3>Recent RSVPs</h3>
       {RSVPs.map((rsvp) => (
-        console.log('rsvp: ', rsvp),
-
         <div className="game-card" key={rsvp.id}>
-          <p>{rsvp.player.username} just RSVPed at {formatRSVPtime(rsvp.created_at)}</p>
-          <p>Gym ID: {rsvp.game.gym_id}</p> 
+          <h3>{rsvp.player.username} joined at {formatRSVPtime(rsvp.created_at)}</h3>
+          <p>Game ID: {rsvp.game.id}</p>
+          <p>at gym {rsvp.game.gym_id}</p>
           {/* // doesnt have access to gym_name since this instance has just games and players */}
           <p>Game Start: {formatDate(rsvp.game.game_start)}</p>
           <p>Game End: {formatDate(rsvp.game.game_end)}</p>
           <p>Total Cap: {rsvp.game.capacity}</p>
+          {rsvp.player_id === user.id ? ( <></>
+              // <button disabled style={{ backgroundColor: 'grey', cursor: 'not-allowed' }}>I've RSVPed</button>
+          ) : userHasRSVPed(rsvp.game.id) ? (
+            <button disabled style={{ backgroundColor: 'grey', cursor: 'not-allowed'}} >
+              You're also RSVPed to this game
+            </button>
+  
+          ) : (  
+              <button onClick={() => handleJoin(rsvp.game.id)}>Join {rsvp.player.username}</button>
+          )}
         </div>
       ))}
     </div>

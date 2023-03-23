@@ -6,23 +6,23 @@ const GameCard = ({game, user, setGames, gyms}) => {
     const [RSVPs, setRSVPs] = useState([]);
     const [formData, setFormData] = useState(game)
     const [showForm, setShowForm] = useState(false);
-
+    
     useEffect(() => {
         if (user) {
-        fetch('/api/signed_up_players')
+            fetch('/api/signed_up_players')
             .then((response) => response.json())
             .then((allRSVPs) => {
-            const RSVPsForGame = allRSVPs.filter((player) => player.game_id === game.id);
-            setRSVPs(RSVPsForGame)
-            const userHasRSVPd = RSVPsForGame.some((player) => player.player_id === user.id);
-            setIsJoined(userHasRSVPd);
+                const RSVPsForGame = allRSVPs.filter((player) => player.game_id === game.id);
+                setRSVPs(RSVPsForGame)
+                const userHasRSVPd = RSVPsForGame.some((player) => player.player_id === user.id);
+                setIsJoined(userHasRSVPd);
             })
             .catch((error) => {
-            console.error('There was a problem with the fetch operation:', error);
+                console.error('There was a problem with the fetch operation:', error);
             });
         }
     }, [game, user]);
-
+    
     const handleJoinOrUnjoin = () => {
         if (isJoined) {
             const RSVP = RSVPs.find((player) => player.player_id === user.id);
@@ -130,27 +130,33 @@ const GameCard = ({game, user, setGames, gyms}) => {
             const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
             const hours = date.getHours();
             const meridiem = hours < 12 ? 'AM' : 'PM';
-        
             return `${((hours + 11) % 12) + 1}${meridiem} - ${days[date.getDay()]} ${months[date.getMonth()]} ${date.getDate()} `;
-          };
+        };
 
-          const formatDateTitle = (dateString) => {
+        const formatDateTitle = (dateString) => {
             const date = new Date(dateString);
             const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
             const hours = date.getHours();
             const meridiem = hours < 12 ? 'AM' : 'PM';
-          
             return `${((hours + 11) % 12) + 1}${meridiem} ${days[date.getDay()]}`;
-          };
+        };
 
-  return (
+return (
     <div className="game-card">
         <h3>{formatDateTitle(game.game_start)} at {game.gym.gym_name}</h3>
+        <p>Game ID: {game.id}</p>
         <p>Donation: ${game.donation}</p>
         <p>Start: {formatDate(game.game_start)}</p>
         <p>End: {formatDate(game.game_end)}</p>
         <p>Total Capacity: {game.capacity} players</p>
         <p>Created by: {game.player.username}</p>
+        <button
+            onClick={handleJoinOrUnjoin}
+            style={{ backgroundColor: isJoined ? 'green' : 'blue' }}
+        >
+        {isJoined ? "You're going!" : 'JOIN GAME'}
+        </button>
+        <br />
             {showForm ? (
                 <form onSubmit={handleFormSubmit}>
                 <h3>Edit your Game</h3>
@@ -204,17 +210,11 @@ const GameCard = ({game, user, setGames, gyms}) => {
                 </form>
                 ) : (
                 <>
-                    {user && game.player.id === user.id && (<button onClick={() => setShowForm(true)}>Edit</button>)}
+                    {user && game.player.id === user.id && (<button onClick={() => setShowForm(true)}>Edit My Game</button>)}
                 </>
                 )}
-        <button
-            onClick={handleJoinOrUnjoin}
-            style={{ backgroundColor: isJoined ? 'green' : 'blue' }}
-        >
-        {isJoined ? 'JOINED' : 'JOIN GAME'}
-        </button>
         {user && game.player.id === user.id && (
-        <button onClick={deleteGame}>DELETE GAME</button>
+        <button onClick={deleteGame}>Delete My Game</button>
         )}
     </div>
   )
