@@ -135,7 +135,7 @@ const GameCard = ({game, user, setGames, gyms}) => {
 
         const formatDateTitle = (dateString) => {
             const date = new Date(dateString);
-            const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
             const hours = date.getHours();
             const meridiem = hours < 12 ? 'AM' : 'PM';
             return `${((hours + 11) % 12) + 1}${meridiem} ${days[date.getDay()]}`;

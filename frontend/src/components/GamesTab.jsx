@@ -15,7 +15,10 @@ const GamesTab = ({gyms, user}) => {
   useEffect(() => {
     fetch('/api/games')
       .then((r) => r.json())
-      .then((data) => setGames(data))
+      .then((data) => 
+   // const sortedEvents = data.sort((a, b) => new Date(b.datetime) - new Date(a.datetime));
+
+      setGames(data))
   }, [])
 
   return (
@@ -25,7 +28,6 @@ const GamesTab = ({gyms, user}) => {
       {showCreateForm ? 'Dismiss' : 'Add a Game'}
       </button>
       {showCreateForm && <CreateAGameForm addGame={addGame} gyms={gyms} />}
-      {/* <CreateAGameForm addGame={addGame} gyms={gyms}/> */}
       {games.map((game) => {
         return <GameCard key={game.id} game={game} games={games} user={user} setGames={setGames} gyms={gyms}/>
       })}

@@ -28,6 +28,10 @@ function App() {
     .then((response) => response.json())
     .then((data) => setGyms(data))
   }, [])
+
+  const updateUser = (updatedUser) => {
+    setUser(updatedUser);
+  };
   
 
   if (!user) {
@@ -66,7 +70,7 @@ function App() {
           <GymsTab gyms={gyms} />
         </Route>
         <Route exact path = '/profile' >
-          <Profile user={user}/>
+          <Profile user={user} updateUser={updateUser}/>
         </Route>
       </Switch>
 

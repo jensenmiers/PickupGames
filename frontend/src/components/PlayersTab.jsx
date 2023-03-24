@@ -8,11 +8,10 @@ const PlayersTab = ({user}) => {
     fetch('/api/signed_up_players')
       .then((response) => response.json())
       .then((allRSVPs) => {
+        // const sortedEvents = data.sort((a, b) => new Date(b.datetime) - new Date(a.datetime));
         setRSVPs(allRSVPs)
       } )
     }, [])
-    
-    console.log('allRSVPs: ', RSVPs);
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
