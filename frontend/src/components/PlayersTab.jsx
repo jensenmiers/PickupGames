@@ -8,8 +8,8 @@ const PlayersTab = ({user}) => {
     fetch('/api/signed_up_players')
       .then((response) => response.json())
       .then((allRSVPs) => {
-        // const sortedEvents = data.sort((a, b) => new Date(b.datetime) - new Date(a.datetime));
-        setRSVPs(allRSVPs)
+        const sortedEvents = allRSVPs.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+        setRSVPs(sortedEvents)
       } )
     }, [])
 
@@ -25,6 +25,8 @@ const PlayersTab = ({user}) => {
 
   const formatRSVPtime = (dateString) => {
     const date = new Date(dateString);
+    const days = ['SUn', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+
     const hours = date.getHours();
     const minutes = date.getMinutes();
     const meridiem = hours < 12 ? 'AM' : 'PM';
@@ -32,7 +34,7 @@ const PlayersTab = ({user}) => {
     const formattedHours = ((hours + 11) % 12) + 1;
     const formattedMinutes = minutes.toString().padStart(2, '0');
 
-  return `${formattedHours}:${formattedMinutes} ${meridiem}`;
+  return `${formattedHours}:${formattedMinutes} ${meridiem} ${days[date.getDay()]}`;
   }
 
   const userHasRSVPed = (gameId) => {

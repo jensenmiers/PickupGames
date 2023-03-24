@@ -22,16 +22,16 @@ function NavBar ({user, setUser}) {
     if (!user) {
         return (
          <nav className="navbar">
-             <NavLink to='/login'>
+             <NavLink activeClassName="navlink-active" to='/login'>
                Log in
              </NavLink>
-             <NavLink to='/games'>
+             <NavLink activeClassName="navlink-active" to='/games'>
                Games
              </NavLink>
-             <NavLink to='/players'>
+             <NavLink activeClassName="navlink-active" to='/players'>
                Players
              </NavLink>
-             <NavLink to= '/gyms'>
+             <NavLink activeClassName="navlink-active" to= '/gyms'>
                Gyms
              </NavLink>
          </nav>
@@ -39,11 +39,11 @@ function NavBar ({user, setUser}) {
     
     return (
         <nav className="navbar">
-            <NavLink exact to='/games'>Games</NavLink>
-            <NavLink exact to='/players'>Players</NavLink>
-            <NavLink exact to='/gyms'>Gyms</NavLink>
-            <NavLink exact to='/profile'>{user.username}</NavLink>
-            <button  onClick={handleLogoutClick}>Log Out</button>
+            <NavLink activeClassName="navlink-active" exact to='/games'>Games</NavLink>
+            <NavLink activeClassName="navlink-active" exact to='/players'>Players</NavLink>
+            <NavLink activeClassName="navlink-active" exact to='/gyms'>Gyms</NavLink>
+            <NavLink activeClassName="navlink-active" exact to='/profile'>{user.username}</NavLink>
+            <button className="navbar-button" onClick={handleLogoutClick}>Log Out</button>
         </nav>
     )
 }

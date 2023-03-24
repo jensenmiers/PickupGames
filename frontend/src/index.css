@@ -109,6 +109,33 @@ button:focus-visible {
   color: white;
 }
 
+.profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.events-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.event-details {
+  background-color: #333333;
+  border: 1px solid #555;
+  border-radius: 4px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin: 10px;
+  padding: 20px;
+  width: 300px;
+  color: #f0f0f0;
+}
+
+
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
@@ -130,6 +157,17 @@ button:focus-visible {
   background-color: #1a1a1a;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+
+.navbar button.navlink-button {
+  background-color: transparent;
+  border-color: transparent;
+}
+
+.navbar button.navlink-button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+
 .navbar a {
   color: #f0f0f0;
   text-decoration: none;
@@ -137,17 +175,30 @@ button:focus-visible {
   border-radius: 4px;
   transition: background-color 0.3s;
 }
+
 .navbar a:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(255, 255, 255, 0.1);  
+}
+
+.navbar a.navlink-active {
+  background-color: #535bf2;
+  color: #ffffff;
+}
+
+.navbar a.navlink-active:hover {
+  background-color: #535bf2;
+  color: #ffffff;
 }
 
 .navbar button {
   color: #f0f0f0;
-  background-color: #646cff;
+  background-color: #1a1a1a;
   padding: 0.5rem 1rem;
   border-radius: 4px;
   transition: background-color 0.3s;
 }
+
 .navbar button:hover {
   background-color: #535bf2;
 }
+

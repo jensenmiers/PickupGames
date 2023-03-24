@@ -15,10 +15,11 @@ const GamesTab = ({gyms, user}) => {
   useEffect(() => {
     fetch('/api/games')
       .then((r) => r.json())
-      .then((data) => 
-   // const sortedEvents = data.sort((a, b) => new Date(b.datetime) - new Date(a.datetime));
+      .then((data) => {
+      const sortedEvents = data.sort((a, b) => new Date(b.game_start) - new Date(a.game_start));
 
-      setGames(data))
+      setGames(sortedEvents)
+      });
   }, [])
 
   return (

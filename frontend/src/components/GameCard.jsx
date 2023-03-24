@@ -143,7 +143,7 @@ const GameCard = ({game, user, setGames, gyms}) => {
 
 return (
     <div className="game-card">
-        <h3>{formatDateTitle(game.game_start)} at {game.gym.gym_name}</h3>
+        <h3>{formatDate(game.game_start)} at {game.gym.gym_name}</h3>
         <p>Game ID: {game.id}</p>
         <p>Donation: ${game.donation}</p>
         <p>Start: {formatDate(game.game_start)}</p>
