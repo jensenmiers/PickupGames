@@ -5,7 +5,7 @@ import CreateAGameForm from './CreateAGameForm'
 const GamesTab = ({gyms, user}) => {
 
   const [games, setGames] = useState([])
-  const [showCreateForm, setShowCreateForm] = useState(false);
+  const [showCreateForm, setShowCreateForm] = useState(false)
 
 
   const addGame = (newGame) => {
@@ -16,11 +16,16 @@ const GamesTab = ({gyms, user}) => {
     fetch('/api/games')
       .then((r) => r.json())
       .then((data) => {
-      const sortedEvents = data.sort((a, b) => new Date(b.game_start) - new Date(a.game_start));
+        const sortedEvents = data.sort(
+        (a, b) => new Date(a.game_start) - new Date(b.game_start))
 
-      setGames(sortedEvents)
-      });
+        setGames(sortedEvents)
+      })
   }, [])
+
+  const now = new Date()
+  const filterUpcomingGames = games.filter((game) => new Date(game.game_start) > now)
+
 
   return (
     <div>
@@ -29,7 +34,7 @@ const GamesTab = ({gyms, user}) => {
       {showCreateForm ? 'Dismiss' : 'Add a Game'}
       </button>
       {showCreateForm && <CreateAGameForm addGame={addGame} gyms={gyms} />}
-      {games.map((game) => {
+      {filterUpcomingGames.map((game) => {
         return <GameCard key={game.id} game={game} games={games} user={user} setGames={setGames} gyms={gyms}/>
       })}
     </div>

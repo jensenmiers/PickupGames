@@ -29,7 +29,6 @@ const GameCard = ({game, user, setGames, gyms}) => {
             fetch(`/api/signed_up_players/${RSVP.id}`, {
             method: 'DELETE',
             headers: {
-                // Add authentication headers if required?
             },
             })
             .then((response) => {
@@ -47,7 +46,6 @@ const GameCard = ({game, user, setGames, gyms}) => {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                // Add your authentication headers if required.
             },
             body: JSON.stringify({
                 user_id: user.id,
@@ -84,7 +82,6 @@ const GameCard = ({game, user, setGames, gyms}) => {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
-                // Add authentication headers if required.
             },
             body: JSON.stringify(formData),
             })
@@ -130,7 +127,9 @@ const GameCard = ({game, user, setGames, gyms}) => {
             const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
             const hours = date.getHours();
             const meridiem = hours < 12 ? 'AM' : 'PM';
-            return `${((hours + 11) % 12) + 1}${meridiem} - ${days[date.getDay()]} ${months[date.getMonth()]} ${date.getDate()} `;
+            const year = date.getFullYear() % 100
+            const paddedYear = year.toString().padStart(2, '0')
+            return `${((hours + 11) % 12) + 1}${meridiem} - ${days[date.getDay()]} ${months[date.getMonth()]} ${date.getDate()}, '${paddedYear} `;
         };
 
         const formatDateTitle = (dateString) => {

@@ -15,8 +15,8 @@ const Profile = ({user, updateUser}) => {
         .then((response) => response.json())
         .then((data) => {
           console.log('data: ', data);
-        const sortedRSVPs = data.sort((a, b) => new Date(b.game.game_start) - new Date(a.game.game_end));
-        
+        const sortedRSVPs = data.sort((a, b) => new Date(b.game.game_start) - new Date(a.game.game_start));
+
         const past = []
         const upcoming = []
         const now = new Date()
@@ -33,8 +33,6 @@ const Profile = ({user, updateUser}) => {
         setUpcomingRSVPs(upcoming)
         console.log("Upcoming RSVPs:", upcoming);
 
-        
-        
         // setUserRSVPs(sortedEvents)
         });
     }
@@ -44,10 +42,12 @@ const Profile = ({user, updateUser}) => {
     const date = new Date(dateString);
     const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    const dayOfMonth = date.getDate();
-    const hours = date.getHours();
-    const meridiem = hours < 12 ? 'AM' : 'PM';
-    return `${((hours + 11) % 12) + 1}${meridiem} ${days[date.getDay()]} - ${months[date.getMonth()]} ${dayOfMonth}`;
+    const dayOfMonth = date.getDate()
+    const hours = date.getHours()
+    const meridiem = hours < 12 ? 'AM' : 'PM'
+    const year = date.getFullYear() % 100
+    const paddedYear = year.toString().padStart(2, '0')
+    return `${((hours + 11) % 12) + 1}${meridiem} ${days[date.getDay()]} - ${months[date.getMonth()]} ${dayOfMonth}, ${paddedYear}`;
   };
 
   const rsvpList = userRSVPs.map((rsvp) => (
@@ -86,7 +86,6 @@ const Profile = ({user, updateUser}) => {
           {pastRSVPs.map((rsvp) => (
             < div key={rsvp.id} className="event-details">
               <h3>{formatDate(rsvp.game.game_start)} at Gym {rsvp.game.gym_id}</h3>
-              <h3>{formatDate(rsvp.game.game_start)} at {rsvp.game.gym_id}</h3>
                   {/* <p>Game ID: {game.id}</p>
                   <p>Donation: ${game.donation}</p>
                   <p>Start: {formatDate(game.game_start)}</p>
