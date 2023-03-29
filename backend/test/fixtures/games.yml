@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  game_start: 2023-03-18 17:10:09
+  game_end: 2023-03-18 17:10:09
+  capacity: 1
+  donation: 1
+  gym: one
+  player: one
+
+two:
+  game_start: 2023-03-18 17:10:09
+  game_end: 2023-03-18 17:10:09
+  capacity: 1
+  donation: 1
+  gym: two
+  player: two
