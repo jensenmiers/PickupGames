@@ -26,10 +26,11 @@ const GamesTab = ({gyms, user}) => {
   const now = new Date()
   const filterUpcomingGames = games.filter((game) => new Date(game.game_start) > now)
 
-
   return (
-    <div>
-      <h2>Games</h2>
+  <div>
+    <div >
+      <h1 className="h1">Games</h1>
+
       <button onClick={() => setShowCreateForm(!showCreateForm)}>
       {showCreateForm ? 'Dismiss' : 'Add a Game'}
       </button>
@@ -38,7 +39,10 @@ const GamesTab = ({gyms, user}) => {
         return <GameCard key={game.id} game={game} games={games} user={user} setGames={setGames} gyms={gyms}/>
       })}
     </div>
+  </div>
   )
 }
+
+
 
 export default GamesTab
