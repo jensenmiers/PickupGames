@@ -2,10 +2,10 @@ import React, {useState, useEffect } from 'react'
 
 const GameCard = ({game, user, setGames, gyms}) => {
 
-    const [isJoined, setIsJoined] = useState(false);
-    const [RSVPs, setRSVPs] = useState([]);
+    const [isJoined, setIsJoined] = useState(false)
+    const [RSVPs, setRSVPs] = useState([])
     const [formData, setFormData] = useState(game)
-    const [showForm, setShowForm] = useState(false);
+    const [showForm, setShowForm] = useState(false)
     
     useEffect(() => {
         if (user) {

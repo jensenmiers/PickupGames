@@ -10,12 +10,24 @@ const CreateAGameForm = ({addGame, gyms}) => {
         donation: '',
     })
 
+    const initialFormData = {
+        game_start: '',
+        game_end: '',
+        capacity: '',
+        gym_id: '',
+        donation: '',
+      }
+
     const handleChange = (e) => {
         setFormData({
             ...formData,
             [e.target.name]: e.target.value,
         })
     }
+
+    const resetForm = () => {
+        setFormData(initialFormData);
+      };
 
     const handleSubmit =(e) => {
         e.preventDefault()
@@ -37,6 +49,8 @@ const CreateAGameForm = ({addGame, gyms}) => {
             })
             .then((newGame) => {
                 addGame(newGame)
+                resetForm()
+
             })
             .catch((error) => {
                 console.error('There was a problem with the fetch operation:', error);
