@@ -69,8 +69,10 @@ const PlayersTab = ({user}) => {
   }
 
 return (
-    <div>
-      <h3>Recent RSVPs</h3>
+  <div>
+    <h3>Recent RSVPs</h3>
+
+  <div className='body'>
       {RSVPs.map((rsvp) => (
         <div className="game-card" key={rsvp.id}>
           <h3>{rsvp.player.username} joined at {formatRSVPtime(rsvp.created_at)}</h3>
@@ -93,6 +95,7 @@ return (
         </div>
       ))}
     </div>
+  </div>
   )
 }
 
