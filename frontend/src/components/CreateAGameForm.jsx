@@ -18,7 +18,37 @@ const CreateAGameForm = ({addGame, gyms}) => {
         donation: '',
       }
 
+    //   const formatDate = (dateString) => {
+    //     const date = new Date(dateString);
+    //     const options = {
+    //       timeZone: 'America/Los_Angeles',
+    //       hour12: true,
+    //       hour: 'numeric',
+    //       minute: 'numeric',
+    //       month: 'short',
+    //       day: 'numeric',
+    //       year: '2-digit'
+    //     };
+    //     return date.toLocaleString('en-US', options);
+    //   };
+      
+
     const handleChange = (e) => {
+
+        // new code
+        // const { name, value } = e.target;
+
+        // const localTime = new Date(value);
+        // const utcTime = new Date(localTime.getTime() + localTime.getTimezoneOffset() * 60000);
+        // const convertedValue = utcTime.toISOString();
+       
+        // setFormData({
+        //     ...formData,
+        //     [name]: convertedValue,
+        //   });
+        // }
+        // new code ^^
+
         setFormData({
             ...formData,
             [e.target.name]: e.target.value,
@@ -31,13 +61,30 @@ const CreateAGameForm = ({addGame, gyms}) => {
 
     const handleSubmit =(e) => {
         e.preventDefault()
+
+        ///new code below to get correct PDT timezone
+        const convertedFormData = {
+            ...formData
+        }
+        if (convertedFormData.game_start) {
+            const localTime = new Date(convertedFormData.game_start);
+            const utcTime = new Date(localTime.getTime() + localTime.getTimezoneOffset() * 60000);
+            convertedFormData.game_start = utcTime.toISOString();
+        }
+        if (convertedFormData.game_end) {
+            const localTime = new Date(convertedFormData.game_end);
+            const utcTime = new Date(localTime.getTime() + localTime.getTimezoneOffset() * 60000);
+            convertedFormData.game_end = utcTime.toISOString();
+        }
+        ///new code above ^^^ to get correct PDT timezone
+
         fetch('/api/games', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 // Add an auth so can only create if loggen in?
             },
-            body: JSON.stringify(formData),
+            body: JSON.stringify(convertedFormData),
         })
             .then((response) => {
                 if (!response.ok) {

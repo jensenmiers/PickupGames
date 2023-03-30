@@ -10,11 +10,13 @@ const GymsTab = ({gyms}) => {
 
   return (
     <div>
-      <h2>Gyms</h2>
+      <h1 className="h1">Gyms</h1>
         <SearchGyms searchedGyms={searchedGyms} setSearchedGyms={setSearchedGyms} />
+        <div className='body'>
         {filteredGyms.map((gym) => (
             <GymCard key={gym.id} gym={gym} />
         ))}
+        </div>
     </div>
   )
 }

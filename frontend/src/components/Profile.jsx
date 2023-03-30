@@ -55,7 +55,7 @@ const Profile = ({user, updateUser}) => {
 
   return (
     <div className='profile'>
-      <h2>Profile Details: {user.username}</h2>
+      {/* <h1 className="h1">Profile: </h1> */}
         {user ? (
         <div>
           {/* <h3>My RSVPs:</h3>
@@ -64,37 +64,8 @@ const Profile = ({user, updateUser}) => {
           ) : (
         <p>Please log in to view your profile.</p>
         )}
-        <div className='events-section'>
-          <h3>Upcoming Events</h3>
-          {upcomingRSVPs.map((rsvp) => (
-            < div key={rsvp.id} className="event-details">
-              <h3>{formatDate(rsvp.game.game_start)} at Gym {rsvp.game.gym_id}</h3>
-                  <p>Game ID: {rsvp.game.id}</p>
-                  <p>Donation: ${rsvp.game.donation}</p>
-                  <p>Start: {formatDate(rsvp.game.game_start)}</p>
-                  <p>End: {formatDate(rsvp.game.game_end)}</p>
-                  <p>Total Capacity: {rsvp.game.capacity} players</p>
-                  <p>Created by: {rsvp.player.username}</p>
-                  <p>RSVPed: {formatDate(rsvp.created_at)}</p>
-            </div>
-          ))}
-        </div>
-        <div >
-          <h3>Past Events</h3>
-          {pastRSVPs.map((rsvp) => (
-            <div key={rsvp.id} className="event-details">
-              <h3>{formatDate(rsvp.game.game_start)} at Gym {rsvp.game.gym_id}</h3>
-                  <p>Game ID: {rsvp.game.id}</p>
-                  <p>Donation: ${rsvp.game.donation}</p>
-                  <p>Start: {formatDate(rsvp.game.game_start)}</p>
-                  <p>End: {formatDate(rsvp.game.game_end)}</p>
-                  <p>Total Capacity: {rsvp.game.capacity} players</p>
-                  <p>Created by: {rsvp.player.username}</p>
-            </div>
-          ))}
-        </div>
-      <div className='game-card'>
-        <h3>About:</h3>
+        <div className='game-card'>
+        <h3>About {user.username}:</h3>
           <p>Username: {user.username}</p>
           <p>Email: {user.player_email}</p>
           <p>Phone Number: {user.player_phone_number}</p>
@@ -103,6 +74,37 @@ const Profile = ({user, updateUser}) => {
       </button>
       {showEditProfile && <FormEditProfile user={user} updateUser={updateUser}/>}
       </div>
+        <div style={{ display: 'flex', flexDirection: 'row' }}>
+          <div className='body-section'>
+            <h3 className='h1'>Upcoming Events</h3>
+            {upcomingRSVPs.map((rsvp) => (
+              < div key={rsvp.id} className="event-details">
+                <h3>{formatDate(rsvp.game.game_start)} at Gym {rsvp.game.gym_id}</h3>
+                    <p>Game ID: {rsvp.game.id}</p>
+                    <p>Donation: ${rsvp.game.donation}</p>
+                    <p>Start: {formatDate(rsvp.game.game_start)}</p>
+                    <p>End: {formatDate(rsvp.game.game_end)}</p>
+                    <p>Total Capacity: {rsvp.game.capacity} players</p>
+                    <p>Created by: {rsvp.player.username}</p>
+                    <p>RSVPed: {formatDate(rsvp.created_at)}</p>
+              </div>
+            ))}
+          </div>
+          <div >
+            <h3 className='h1'>Past Events</h3>
+            {pastRSVPs.map((rsvp) => (
+              <div key={rsvp.id} className="event-details">
+                <h3>{formatDate(rsvp.game.game_start)} at Gym {rsvp.game.gym_id}</h3>
+                    <p>Game ID: {rsvp.game.id}</p>
+                    <p>Donation: ${rsvp.game.donation}</p>
+                    <p>Start: {formatDate(rsvp.game.game_start)}</p>
+                    <p>End: {formatDate(rsvp.game.game_end)}</p>
+                    <p>Total Capacity: {rsvp.game.capacity} players</p>
+                    <p>Created by: {rsvp.player.username}</p>
+              </div>
+            ))}
+          </div>
+        </div>
     </div>
   )
 }

@@ -128,7 +128,7 @@ button:focus-visible {
   margin-bottom: 2rem;
 }
 
-.events-section {
+.body-section {
   display: flex;
   flex-direction: column;
   align-items: center;

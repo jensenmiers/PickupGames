@@ -28,16 +28,20 @@ const GamesTab = ({gyms, user}) => {
 
   return (
   <div>
-    <h1 className="h1">Games</h1>
-    <button onClick={() => setShowCreateForm(!showCreateForm)}>
+  <h1 className="h1">Games</h1>
+  <button onClick={() => setShowCreateForm(!showCreateForm)}>
       {showCreateForm ? 'Dismiss' : 'Add a Game'}
       </button>
       {showCreateForm && <CreateAGameForm addGame={addGame} gyms={gyms} />}
+
+  <div>
+    
     <div className='body'>
       {filterUpcomingGames.map((game) => {
         return <GameCard key={game.id} game={game} games={games} user={user} setGames={setGames} gyms={gyms}/>
       })}
     </div>
+  </div>
   </div>
   )
 }

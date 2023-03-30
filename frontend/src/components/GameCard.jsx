@@ -123,6 +123,8 @@ const GameCard = ({game, user, setGames, gyms}) => {
 
         const formatDate = (dateString) => {
             const date = new Date(dateString);
+            const formattedDate = date.toLocaleString('en-US', { timeZone: 'America/Los_Angeles' });
+
             const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
             const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
             const hours = date.getHours();
@@ -132,13 +134,13 @@ const GameCard = ({game, user, setGames, gyms}) => {
             return `${((hours + 11) % 12) + 1}${meridiem} - ${days[date.getDay()]} ${months[date.getMonth()]} ${date.getDate()}, '${paddedYear} `;
         };
 
-        const formatDateTitle = (dateString) => {
-            const date = new Date(dateString);
-            const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-            const hours = date.getHours();
-            const meridiem = hours < 12 ? 'AM' : 'PM';
-            return `${((hours + 11) % 12) + 1}${meridiem} ${days[date.getDay()]}`;
-        };
+        // const formatDateTitle = (dateString) => {
+        //     const date = new Date(dateString);
+        //     const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        //     const hours = date.getHours();
+        //     const meridiem = hours < 12 ? 'AM' : 'PM';
+        //     return `${((hours + 11) % 12) + 1}${meridiem} ${days[date.getDay()]}`;
+        // };
 
 return (
     <div className="game-card">
@@ -148,7 +150,7 @@ return (
         <p>Start: {formatDate(game.game_start)}</p>
         <p>End: {formatDate(game.game_end)}</p>
         <p>Total Capacity: {game.capacity} players</p>
-        <p>Created by: {game.player.username}</p>
+        <p>Created by: {game.player.username === user.username ? 'Me' : game.player.username}</p>
         <button
             onClick={handleJoinOrUnjoin}
             style={{ backgroundColor: isJoined ? 'green' : 'blue' }}

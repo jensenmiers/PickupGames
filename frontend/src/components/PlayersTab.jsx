@@ -70,12 +70,12 @@ const PlayersTab = ({user}) => {
 
 return (
   <div>
-    <h3>Recent RSVPs</h3>
+    <h1 className="h1">Recent RSVPs</h1>
 
   <div className='body'>
       {RSVPs.map((rsvp) => (
         <div className="game-card" key={rsvp.id}>
-          <h3>{rsvp.player.username} joined at {formatRSVPtime(rsvp.created_at)}</h3>
+          <h3>{rsvp.player.username === user.username ? 'I' : rsvp.player.username } joined at {formatRSVPtime(rsvp.created_at)}</h3>
           <p>Game ID: {rsvp.game.id}</p>
           <p>at gym {rsvp.game.gym_id}</p>
           {/* // doesnt have access to gym_name since this instance has just games and players */}
@@ -86,10 +86,9 @@ return (
               // <button disabled style={{ backgroundColor: 'grey', cursor: 'not-allowed' }}>I've RSVPed</button>
           ) : userHasRSVPed(rsvp.game.id) ? (
             <button disabled style={{ backgroundColor: 'grey', cursor: 'not-allowed'}} >
-              You're also RSVPed to this game
+              You're already RSVPed to this game
             </button>
-  
-          ) : (  
+          ) : (
               <button onClick={() => handleJoin(rsvp.game.id)}>Join {rsvp.player.username}</button>
           )}
         </div>

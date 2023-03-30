@@ -5,7 +5,7 @@ const GymCard = ({gym}) => {
 
 
     return (
-        <div className="gym-card">
+        <div className="game-card">
             <h3>{gym.gym_name}</h3>
             <p>Location: {gym.address}</p>
             <p>Phone: {gym.gym_phone_number}</p>
