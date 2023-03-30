@@ -4,7 +4,14 @@ const GameCard = ({game, user, setGames, gyms}) => {
 
     const [isJoined, setIsJoined] = useState(false)
     const [RSVPs, setRSVPs] = useState([])
-    const [formData, setFormData] = useState(game)
+    const [formData, setFormData] = useState({
+        game_start: '',
+        game_end: '',
+        capacity: '',
+        gym_id: '',
+        donation: '',
+        location: ''
+    })
     const [showForm, setShowForm] = useState(false)
     
     useEffect(() => {
@@ -68,34 +75,60 @@ const GameCard = ({game, user, setGames, gyms}) => {
         }
         };
 
+        const handleFormChange = (e) => {
+            console.log('formData: ', formData);
+            setFormData({
+            ...formData,
+            [e.target.name]: e.target.value 
+            })
+        }
+
+
         // const handleFormChange = (e) => {
         //     const { name, value } = e.target;
+        //     let convertedValue = value;
+
+        //     if (name === "game_start" || name === "game_end") {
+        //     const localTime = new Date(value);
+        //     console.log('localTime: ', localTime);
+        //     const utcTime = new Date(localTime.getTime() + localTime.getTimezoneOffset() * 60000);
+        //     console.log('utcTime: ', utcTime);
+        //     const convertedValue = utcTime.toISOString(); }
+        //     console.log('convertedValue: ', convertedValue);
+
         //     setFormData((prevData) => ({
-        //     ...prevData,
-        //     [name]: value,
+        //       ...prevData,
+        //       [name]: convertedValue,
         //     }));
-        // };
-
-
-        const handleFormChange = (e) => {
-            const { name, value } = e.target;
-            const localTime = new Date(value);
-            const utcTime = new Date(localTime.getTime() + localTime.getTimezoneOffset() * 60000);
-            const convertedValue = utcTime.toISOString();
-            setFormData((prevData) => ({
-              ...prevData,
-              [name]: convertedValue,
-            }));
-          };
+        //   };
 
         const handleFormSubmit = (e) => {
             e.preventDefault();
+           
+            const convertedFormData = {
+                ...formData
+            }
+            if (convertedFormData.game_start) {
+                const localTime = new Date(convertedFormData.game_start);
+                const utcTime = new Date(localTime.getTime() + localTime.getTimezoneOffset() * 60000);
+                // convertedFormData.game_start = utcTime.toISOString();
+                convertedFormData.game_start = localTime.toISOString()
+            }
+            if (convertedFormData.game_end) {
+                const localTime = new Date(convertedFormData.game_end);
+                const utcTime = new Date(localTime.getTime() + localTime.getTimezoneOffset() * 60000);
+                convertedFormData.game_end = localTime.toISOString();
+            }
+
+
+
+
             fetch(`/api/games/${game.id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(formData),
+            body: JSON.stringify(convertedFormData),
             })
             .then((response) => {
                 if (!response.ok) {
@@ -129,13 +162,13 @@ const GameCard = ({game, user, setGames, gyms}) => {
             })
     }
 
-        const editGame = () => {
-            showForm(true);
-        };
+        // const editGame = () => {
+        //     showForm(true);
+        // };
 
         const formatDate = (dateString) => {
             const date = new Date(dateString);
-            const formattedDate = date.toLocaleString('en-US', { timeZone: 'America/Los_Angeles' });
+            // const formattedDate = date.toLocaleString('en-US', { timeZone: 'America/Los_Angeles' });
 
             const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
             const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -171,10 +204,10 @@ return (
         </button>
         <br />
             {showForm ? (
-                <form onSubmit={handleFormSubmit}>
+                <form  onSubmit={handleFormSubmit}>
                 <h3>Edit your Game</h3>
                     <label htmlFor="game_start">Game Start:</label>
-                    <input
+                    <input style={{ color: 'black'}}
                         type="datetime-local"
                         name="game_start"
                         value={formData.game_start}
@@ -182,7 +215,7 @@ return (
                     />
                     <br />
                     <label htmlFor="game_end">Game End:</label>
-                    <input
+                    <input style={{ color: 'black'}}
                         type="datetime-local"
                         name="game_end"
                         value={formData.game_end}
@@ -190,7 +223,7 @@ return (
                     />
                     <br />
                     <label htmlFor="capacity">Capacity:</label>
-                    <input
+                    <input style={{ color: 'black'}}
                         type="number"
                         name="capacity"
                         value={formData.capacity}
@@ -198,7 +231,7 @@ return (
                     />
                     <br />
                     <label htmlFor="donation">Donation:</label>
-                    <input
+                    <input style={{ color: 'black'}}
                         type="number"
                         name="donation"
                         value={formData.donation}
@@ -206,7 +239,7 @@ return (
                     />
                     <br />
                     <label htmlFor="gym_id">Location:</label>
-                    <select
+                    <select style={{ color: 'black'}}
                         name='gym_id'
                         value={formData.gym_id}
                         onChange={handleFormChange}

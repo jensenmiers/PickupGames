@@ -69,12 +69,13 @@ const CreateAGameForm = ({addGame, gyms}) => {
         if (convertedFormData.game_start) {
             const localTime = new Date(convertedFormData.game_start);
             const utcTime = new Date(localTime.getTime() + localTime.getTimezoneOffset() * 60000);
-            convertedFormData.game_start = utcTime.toISOString();
+            // convertedFormData.game_start = utcTime.toISOString();
+            convertedFormData.game_start = localTime.toISOString()
         }
         if (convertedFormData.game_end) {
             const localTime = new Date(convertedFormData.game_end);
             const utcTime = new Date(localTime.getTime() + localTime.getTimezoneOffset() * 60000);
-            convertedFormData.game_end = utcTime.toISOString();
+            convertedFormData.game_end = localTime.toISOString();
         }
         ///new code above ^^^ to get correct PDT timezone
 
