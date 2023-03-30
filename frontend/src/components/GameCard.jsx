@@ -68,13 +68,25 @@ const GameCard = ({game, user, setGames, gyms}) => {
         }
         };
 
+        // const handleFormChange = (e) => {
+        //     const { name, value } = e.target;
+        //     setFormData((prevData) => ({
+        //     ...prevData,
+        //     [name]: value,
+        //     }));
+        // };
+
+
         const handleFormChange = (e) => {
             const { name, value } = e.target;
+            const localTime = new Date(value);
+            const utcTime = new Date(localTime.getTime() + localTime.getTimezoneOffset() * 60000);
+            const convertedValue = utcTime.toISOString();
             setFormData((prevData) => ({
-            ...prevData,
-            [name]: value,
+              ...prevData,
+              [name]: convertedValue,
             }));
-        };
+          };
 
         const handleFormSubmit = (e) => {
             e.preventDefault();

@@ -47,7 +47,7 @@ const CreateAGameForm = ({addGame, gyms}) => {
         //     [name]: convertedValue,
         //   });
         // }
-        // new code ^^
+        // // new code ^^
 
         setFormData({
             ...formData,
