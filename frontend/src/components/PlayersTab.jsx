@@ -25,7 +25,7 @@ const PlayersTab = ({user}) => {
 
   const formatRSVPtime = (dateString) => {
     const date = new Date(dateString);
-    const days = ['SUn', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+    const days = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
 
     const hours = date.getHours();
     const minutes = date.getMinutes();
